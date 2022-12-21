@@ -182,6 +182,7 @@ function download_component() {
         else   
             show_message "downloading $4 ..."
             ariapkg=$(package_installed aria2c "summary")
+            wgetpkg=$(package_installed wget "summary")
             curlpkg=$(package_installed curl "summary")
             
             if [ "$ariapkg" == "true" ];then
@@ -192,16 +193,16 @@ function download_component() {
                     notify-send "Photoshop CC" "$4 download completed" -i "download"
                 fi
 
-            elif [ "$curlpkg" == "true" ];then
-                show_message "using curl to download $4"
-                curl $3 -o $1
-            else
+            elif [ "$wgetpkg" == "true" ];then
                 show_message "using wget to download $4"
                 wget --no-check-certificate "$3" -P "$CACHE_PATH"
                 
                 if [ $? -eq 0 ];then
                     notify-send "Photoshop CC" "$4 download completed" -i "download"
                 fi
+            else
+                show_message "using curl to download $4"
+                curl $3 -o $1
             fi
             ((tout++))
         fi
